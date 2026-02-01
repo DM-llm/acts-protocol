@@ -1,12 +1,36 @@
 #!/bin/bash
 
 # ACTS 协议初始化脚本
-# 用法：bash /path/to/acts-protocol/scripts/init.sh
+# 
+# 用法 1（推荐）：在项目根目录运行
+#   bash acts-protocol/scripts/init.sh
+#
+# 用法 2：指定 acts-protocol 路径
+#   bash /path/to/acts-protocol/scripts/init.sh
+#
+# 用法 3：从 acts-protocol 目录运行
+#   cd acts-protocol && bash scripts/init.sh /path/to/your-project
 
 set -e
 
 echo "🚀 开始初始化 ACTS 协议..."
 echo ""
+
+# 确定目标项目目录
+if [ -n "$1" ]; then
+    # 如果提供了参数，使用参数作为目标目录
+    TARGET_DIR="$1"
+    if [ ! -d "$TARGET_DIR" ]; then
+        echo "❌ 错误：目标目录不存在: $TARGET_DIR"
+        exit 1
+    fi
+    cd "$TARGET_DIR"
+    echo "📍 目标目录: $TARGET_DIR"
+else
+    # 否则使用当前目录
+    TARGET_DIR="$(pwd)"
+    echo "📍 目标目录: $TARGET_DIR"
+fi
 
 # 检查是否在项目根目录
 if [ ! -d ".git" ]; then
@@ -23,10 +47,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ACTS_ROOT="$(dirname "$SCRIPT_DIR")"
 TEMPLATES_DIR="$ACTS_ROOT/templates"
 
+echo "📦 ACTS 协议路径: $ACTS_ROOT"
+echo ""
+
 # 检查 templates 目录是否存在
 if [ ! -d "$TEMPLATES_DIR" ]; then
-    echo "❌ 错误：找不到 templates 目录"
-    echo "请确保从 acts-protocol 仓库运行此脚本"
+    echo "❌ 错误：找不到 templates 目录: $TEMPLATES_DIR"
+    echo "请确保 acts-protocol 仓库完整"
     exit 1
 fi
 
@@ -85,12 +112,18 @@ else
 fi
 
 # 复制 steering 文件
+echo ""
+echo "📄 复制 steering 文件..."
 for file in project.md debugging.md language.md pr-docs.md; do
     if [ -f "context/steering/$file" ]; then
         echo "⚠️  context/steering/$file 已存在，跳过"
     else
-        cp "$TEMPLATES_DIR/context/steering/$file" "context/steering/$file"
-        echo "✅ 复制 context/steering/$file"
+        if [ -f "$TEMPLATES_DIR/context/steering/$file" ]; then
+            cp "$TEMPLATES_DIR/context/steering/$file" "context/steering/$file"
+            echo "✅ 复制 context/steering/$file"
+        else
+            echo "⚠️  模板文件不存在: $file，跳过"
+        fi
     fi
 done
 

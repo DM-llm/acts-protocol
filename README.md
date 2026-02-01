@@ -48,20 +48,32 @@ ACTS 提供：
 **适用于**：任何项目
 
 ```bash
-# 1. 克隆 ACTS 协议仓库
+# 1. 克隆 ACTS 协议仓库到你的项目根目录
+cd your-project
 git clone https://github.com/yourusername/acts-protocol.git
 
-# 2. 进入你的项目目录
-cd your-project
+# 2. 运行初始化脚本（在项目根目录）
+bash acts-protocol/scripts/init.sh
 
-# 3. 运行初始化脚本
-bash /path/to/acts-protocol/scripts/init.sh
+# 3. （可选）删除 acts-protocol 仓库
+rm -rf acts-protocol
 ```
 
 **脚本会自动**：
 - 创建 `context/` 目录结构
 - 从 templates/ 复制所有配置文件到你的项目
 - 创建初始的 `current-task.md` 和索引文件
+- 不会覆盖已存在的文件
+
+**其他使用方式**：
+```bash
+# 方式 A：从 acts-protocol 目录运行，指定目标项目
+cd acts-protocol
+bash scripts/init.sh /path/to/your-project
+
+# 方式 B：使用绝对路径
+bash /absolute/path/to/acts-protocol/scripts/init.sh
+```
 
 **跨平台支持**：
 - Windows：使用 Git Bash（Git for Windows 自带）
@@ -69,19 +81,25 @@ bash /path/to/acts-protocol/scripts/init.sh
 
 ### 方式 2：手动复制（灵活）
 
+**适用于**：想要自定义的用户
+
 ```bash
-# 1. 复制核心配置文件
-cp acts-protocol/templates/AGENTS.md your-project/
-cp acts-protocol/templates/SYS_PROMPT.md your-project/
+# 1. 克隆 ACTS 协议仓库
+git clone https://github.com/yourusername/acts-protocol.git
 
-# 2. 创建 context 目录
-mkdir -p your-project/context/{docs,steering,reviews}
+# 2. 进入你的项目目录
+cd your-project
 
-# 3. 复制 context 模板
-cp -r acts-protocol/templates/context/* your-project/context/
+# 3. 复制核心配置文件
+cp acts-protocol/templates/AGENTS.md .
+cp acts-protocol/templates/SYS_PROMPT.md .
+cp acts-protocol/templates/CLAUDE.md .
 
-# 4. 创建模块目录
-mkdir -p your-project/context/docs/{前端,后端,AI层,全栈,lessons}
+# 4. 复制 context 目录结构
+cp -r acts-protocol/templates/context .
+
+# 5. （可选）删除 acts-protocol 仓库
+rm -rf acts-protocol
 ```
 
 ### 方式 3：配置 AI 助手
