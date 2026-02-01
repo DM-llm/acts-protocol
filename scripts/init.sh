@@ -59,8 +59,8 @@ fi
 
 # 创建基本目录结构
 echo "📁 创建目录结构..."
-mkdir -p context/{docs,steering,reviews}
-mkdir -p context/docs/{前端,后端,AI层,全栈,lessons}
+mkdir -p context/{docs,steering,lessons}
+mkdir -p context/docs/{前端,后端,AI层,全栈}
 echo "✅ 目录结构创建完成"
 
 # 复制配置文件
